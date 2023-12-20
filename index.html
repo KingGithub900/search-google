@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="icon" href="./search_google.png">
+    <title>بـحـث مـخـصـص فـي جـوجـل</title>
+</head>
+<body>
+
+<main>
+    <form action="https://www.google.com/search" method="get" id="form">
+        <article>
+            <h2 id="title">الــبــحــث عـن الـمــعــلــومــات بـشــكــل اســرع</h2>
+            <section>
+                
+                <div>
+                    <textarea id="input" rows="1" placeholder="بـحـث"></textarea>
+                    <textarea name="q" hidden id="search_text"></textarea>
+
+                    <nav id="nav">
+                        <b id="first_b">
+                            <span id="value_select">نـمـوذج</span>
+                            <span id="show_dropdown" style="color: rgb(0, 0, 0, 0.90);">▼</span>
+                        </b>
+                        <div id="dropdown"> 
+                            <i>——— صـــور ———</i>
+                            
+                            <b>ايقونات ico</b>
+                            <span>icon filetype: ico</span>
+                            
+                            <b>صور متحركة</b>
+                            <span>photo filetype: gif</span>
+                            
+                            <b>ايقونات متحركة</b>
+                            <span>icon filetype: gif</span>
+                            
+                            <b>صور رسم</b>
+                            <span>filetype: drawing</span>
+                            
+                            <b>خلفية شفافة</b>
+                            <span>allinurl:transpatent</span>
+                            
+                            <i>——— مـلـفـاتــ ———</i>
+
+                            <b>ملفات pdf</b>
+                            <span>filetype: pdf</span>
+
+                            <b>ملفات فوتوشوب</b>
+                            <span>filetype: psd</span>
+                            
+                            <b>ملفات اليستريتور</b>
+                            <span>illustrator filetype: ai</span>
+                            
+                            <b>خطوط</b>
+                            <span>font filetype: ttf</span>
+                            
+                            <b id="size_file">تحديد حجم الملف</b>
+
+                            <b id="ext_file">تحديد امتداد</b>
+
+                            <i>——— عـنـوان URL ———</i>
+
+                            <b class="url">البحث عن كلمة محددة في عنوان URL</b>
+                            <b class="url" id="all_url">البحث عن <span> جميع </span> الكلمات او العبارات موجودة في عنوان URL</b>
+                            
+                            <b class="intitle">البحث عن كلمة  محددة في عنوان صفحة الموقع</b>
+                            <b class="intitle" id="all_title"> البحث في <span> جميع </span> المواقع التي تحتوي على جملة موجودة في عنوان الصفحة</b>
+                            
+                            <b class="intext">البحث عن كلمة موجودة في محتوى الموقع</b>
+                            <b class="intext" id="all_text"> البحث عن <span>كلمة او جملة او نص</span> موجودة في محتوى الموقع</b>
+                            
+                            <b id="domain">البحث عن جميع المواقع المنتهية دومين معين</b>
+                            <b id="sub_site">عرض جميع المواقع الفرعية لموقع معين</b>
+                            <b id="sub_site_word">عرض جميع المواقع الفرعية لموقع معين التي<span> تحتوي على كلمة معينة </span></b>
+                            
+                            <i>——— اخـــرى ———</i>
+                            <b id="country">البحث داخل دولة معينة</b>
+                            <b id="remove">ازالة موضوع من نتائج البحث</b>
+                            
+
+                        </div>
+                    </nav>
+
+                    <button type="submit" id="btn_submit">
+                        <img src="./search_google.png" id="img_search" width="20" alt="">
+                    </button>
+
+                    <!-- <a target="_top" href="javascript:setTimeout( function () {window.location.href = 'http://google.com'},1500)" id="link_search" class="link_search" >
+                        <img src="./search_google.png" id="img_search" width="20" alt="">
+                    </a> -->
+                    
+                </div>
+            </section>
+        </article>
+    </form>
+</main>
+    
+
+    <script src="./boot/jquery.js"></script>
+    <script>
+
+        var input = document.getElementById("input")
+        const h = parseInt(getComputedStyle(input).getPropertyValue('height'))
+
+        input.addEventListener("input", function() {
+            input.style.height = `${h}px`
+            input.style.padding = `5px`
+            const newh = input.scrollHeight - h;
+            input.style.height = `${newh}px`
+        })
+
+        $(function () {
+            $("#input").focus()
+
+            $("#first_b span:last-child").click( function () {
+                let item = document.getElementById("dropdown")
+                if(getComputedStyle(item).getPropertyValue('display') == 'none'){
+                    $("nav div").css("display","flex")
+                    $(this).css("transform","none")
+                }
+                else if(getComputedStyle(item).getPropertyValue('display') == "flex"){
+                    $("nav div").css("display","none")
+                    // $(this).css("transform","rotate(180deg)")
+                }
+            })
+
+            
+            var google = "";
+            var value_b_span = '';
+
+            $("#show_dropdown").click(function () {
+                if($(this).text() == "▼"){
+                    $(this).text("▲") 
+                }else{
+                    $(this).text("▼")
+                }
+            })
+
+            $("b:not(#first_b)").click( function () {
+                $value_b = $(this).text()
+                $value_b_span = $(this).next("span").text()
+
+            
+                $("nav div").css("display","none")
+                $("nav div b").css({"background-color":"whitesmoke","color":"black"})
+                $(this).css({"background-color":"rgb(0, 149, 255)","color":"whitesmoke"})
+                // $("#first_b span:last-child").css("transform","rotate(180deg)")
+                
+                // alert($(this).attr("id"))
+                // alert($(this).attr("class"))
+
+                if( $(this).attr("id") == "ext_file" ){
+                    let ext_file = prompt("اكـتـب الامـتـداد")
+                    if (ext_file){
+                        google = " ext: ." + ext_file 
+                    }
+                }else if( $(this).attr("id") == "size_file" ){
+                    let size_file = prompt("حدد حجم الملف")
+                    if (size_file){
+                        google = " size: > " + size_file 
+                    }
+                }else if( $(this).attr("class") == "url" ){
+                    let url = prompt("اكتب كلمة او جملة")
+                    if (url){
+                        if( $(this).attr("id") == "all_url" ){
+                            google = " allinurl: " + url 
+                        }else{
+                            google = " inurl: " + url
+                        }
+                    }
+                }else if( $(this).attr("class") == "intitle" ){
+                    let intitle = prompt("اكتب كلمة او جملة")
+                    if (intitle){
+                        if( $(this).attr("id") == "all_title" ){
+                            google = " allintitle: " + intitle 
+                        }else{
+                            google = " intitle: " + intitle
+                        }
+                    }
+                }else if( $(this).attr("class") == "intext" ){
+                    let intext = prompt("اكتب كلمة او جملة")
+                    if (intext){
+                        if($(this).attr("id") == "all_text" ){
+                            google = " allintext: " + intext 
+                        }else{
+                            google = " intext: " + intext
+                        }
+                    }
+                }else if( $(this).attr("id") == "domain" ){
+                    let domain = prompt("(com , net) اكتب دومين مثال")
+                    if (domain){
+                        google = "site:*." + domain
+                        $("#input").val('')
+                    }
+                }else if( $(this).attr("id") == "sub_site" ){
+                    let sub_site = prompt("اكتب عنوان الموقع")
+                    if (sub_site){
+                        google = "site:" + sub_site + "-www"
+                        $("#input").val('')
+                    }
+                }else if( $(this).attr("id") == "sub_site_word" ){
+                    let sub_site_word = prompt("اكتب عنوان الموقع")
+                    let sub_site_word1 = prompt("اكتب كلمة فرعية")
+                    if (sub_site_word && sub_site_word1){
+                        google = "site:" + sub_site_word + "/" + sub_site_word1
+                        $("#input").val('')
+                    }
+                }else if( $(this).attr("id") == "country" ){
+                    let country = prompt("اكتب اسم الدولة")
+                    if (country){
+                        google = '"' + country + '"'
+                    }
+                }else if( $(this).attr("id") == "remove" ){
+                    let remove = prompt("اكتب كلمة لازالتها من نتائج البحث")
+                    if (remove){
+                        google = '-' + remove
+                    }
+                }
+                
+
+
+
+                
+                if($value_b_span != ''){
+                    // $("#value_select").text("نـمـوذج")
+                    $("#value_select").html($value_b)
+                    google = ''
+                    value_b_span = $value_b_span  
+                }else if(google != ''){
+                    $("#value_select").html($value_b)
+                    $value_b_span = '';
+                }else{
+                    $("#value_select").text("نـمـوذج")
+                    $("nav div b").css({"background-color":"whitesmoke","color":"black"})
+                    $value_b_span = '';
+                    value_b_span = '';
+                    google = '';
+                }
+                
+            })
+
+            // تاخير الارسال 
+            document.getElementById("form").addEventListener('submit' ,function (event) {
+                event.preventDefault()
+
+                setTimeout(function () {
+                    event.target.submit()
+                },1500)
+            })
+
+            
+            $("#btn_submit").click(function () {
+                if($("#input").val() == ""){
+                    $("#input").attr("placeholder","ادخل عنوان للبحث اولاً")
+                }else{
+                    document.getElementById("form").addEventListener('submit' ,function (event) {
+                        event.target.submit()
+                    })
+                    let text = $("#input").val()
+                    $("#input").attr("placeholder","بحث")
+
+                    if(google == ''){
+                        $value_search = text+' '+value_b_span
+                    }else{
+                        $value_search = text+' '+google
+                    }
+
+                    $("#search_text").val($value_search)
+                }
+                
+            })
+        })
+    </script>
+</body>
+</html>
